@@ -46,7 +46,7 @@ Most regular expression implementations employ similar syntaxes and metacharacte
 
 A very simple use of a regular expression would be to locate the same word spelled two different ways. For example the regular expression `organi[sz]e` matches both `organise` and `organize`. But because it locates all matches for the pattern in the file, not just for that word, it would also match `reorganise`, `reorganize`, `organises`, `organizes`, `organised`, `organized`, etc.
 
-### Learning common regex metacharacters
+## Learning common regex metacharacters
 
 Square brackets can be used to define a list or range of characters to be found. So:
 
@@ -100,6 +100,8 @@ Or, any other string that starts a line, begins with a letter `o` in lower or ca
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
+## Additional regex metacharacters
+
 Other useful special characters are:
 
 - `*` matches the preceding element zero or more times. For example, ab\*c matches "ac", "abc", "abbbc", etc.
@@ -113,7 +115,7 @@ So, what are these going to match?
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## `^[Oo]rgani.e\w*`
+## 1. `^[Oo]rgani.e\w*`
 
 What will the regular expression `^[Oo]rgani.e\w*` match?
 
@@ -138,7 +140,7 @@ Or, any other string that starts a line, begins with a letter `o` in lower or ca
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## `[Oo]rgani.e\w+$`
+## 2. `[Oo]rgani.e\w+$`
 
 What will the regular expression `[Oo]rgani.e\w+$` match?
 
@@ -163,7 +165,7 @@ Or, any other string that ends a line, begins with a letter `o` in lower or capi
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## `^[Oo]rgani.e\w?\b`
+## 3. `^[Oo]rgani.e\w?\b`
 
 What will the regular expression `^[Oo]rgani.e\w?\b` match?
 
@@ -188,7 +190,7 @@ Or, any other string that starts a line, begins with a letter `o` in lower or ca
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## `^[Oo]rgani.e\w?$`
+## 4. `^[Oo]rgani.e\w?$`
 
 What will the regular expression `^[Oo]rgani.e\w?$` match?
 
@@ -213,7 +215,7 @@ Or, any other string that starts and ends a line, begins with a letter `o` in lo
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## `\b[Oo]rgani.e\w{2}\b`
+## 5. `\b[Oo]rgani.e\w{2}\b`
 
 What will the regular expression `\b[Oo]rgani.e\w{2}\b` match?
 
@@ -238,7 +240,7 @@ Or, any other string that begins with a letter `o` in lower or capital case afte
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## `\b[Oo]rgani.e\b|\b[Oo]rgani.e\w{1}\b`
+## 6. `\b[Oo]rgani.e\b|\b[Oo]rgani.e\w{1}\b`
 
 What will the regular expression `\b[Oo]rgani.e\b|\b[Oo]rgani.e\w{1}\b` match?
 
@@ -261,7 +263,7 @@ Or, any other string that begins with a letter `o` in lower or capital case afte
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-This logic is useful when you have lots of files in a directory, when those files have logical file names, and when you want to isolate a selection of files. It can be used for looking at cells in spreadsheets for certain values, or for extracting some data from a column of a spreadsheet to make new columns. There are many other contexts in which regex is useful when using a computer to search through a document, spreadsheet, or file structure. Some real-world use cases for regex are included on a [ACRL Tech Connect blog post](https://acrl.ala.org/techconnect/post/fear-no-longer-regular-expressions/) .
+This logic is useful when you have lots of files in a directory, when those files have logical file names, and when you want to isolate a selection of files. It can be used for looking at cells in spreadsheets for certain values, or for extracting some data from a column of a spreadsheet to make new columns. There are many other contexts in which regex is useful when using a computer to search through a document, spreadsheet, or file structure. You can browse real-world use cases in the [regex101.com library of community-submitted regex patterns](https://regex101.com/library).
 
 To embed this knowledge we will not - however - be using computers. Instead we'll use pen and paper for now.
 
@@ -275,7 +277,7 @@ Then test each other on the answers. If you want to check your logic use [regex1
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Using square brackets
+## 1. Using square brackets
 
 What will the regular expression `Fr[ea]nc[eh]` match?
 
@@ -300,7 +302,7 @@ Note that the way this regular expression is constructed, it will match misspell
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Using dollar signs
+## 2. Using dollar signs
 
 What will the regular expression `Fr[ea]nc[eh]$` match?
 
@@ -325,7 +327,7 @@ This will match the pattern only when it appears at the end of a line. It will a
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Introducing options
+## 3. Introducing options
 
 What would match the strings `French` and `France` that appear at the beginning of a line?
 
@@ -347,7 +349,7 @@ This will also find words where there were characters after `French` such as `Fr
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Case insensitivity
+## 4. Case insensitivity
 
 How do you match the whole words `colour` and `color` (case insensitive)?
 
@@ -375,7 +377,7 @@ so `/colou?r/i` will match all case insensitive variants of `colour` and `color`
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Word boundaries
+## 5. Word boundaries
 
 How would you find the whole word `headrest` and or `head rest` but not <code>head  rest</code> (that is, with two spaces between `head` and `rest`?
 
@@ -397,7 +399,7 @@ Note that although `\bhead\s?rest\b` does work, it will also match zero or one t
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Matching non-linguistic patterns
+## 6. Matching non-linguistic patterns
 
 How would you find a string that ends with four letters preceded by at least one zero?
 
@@ -415,7 +417,7 @@ How would you find a string that ends with four letters preceded by at least one
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Matching digits
+## 7. Matching digits
 
 How do you match any four-digit string anywhere?
 
@@ -437,7 +439,7 @@ Note: this will also match four-digit strings within longer strings of numbers a
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Matching dates
+## 8. Matching dates
 
 How would you match the date format `dd-MM-yyyy`?
 
@@ -459,7 +461,7 @@ Depending on your data, you may choose to remove the word bounding.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Matching multiple date formats
+## 9. Matching multiple date formats
 
 How would you match the date format `dd-MM-yyyy` or `dd-MM-yy` at the end of a line only?
 
@@ -481,7 +483,7 @@ Note this will also find strings such as `31-01-198` at the end of a line, so yo
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Matching publication formats
+## 10. Matching publication formats
 
 How would you match publication formats such as `British Library : London, 2015` and `Manchester University Press: Manchester, 1999`?
 

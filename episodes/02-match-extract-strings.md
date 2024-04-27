@@ -17,13 +17,13 @@ exercises: 30
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Exercise Using Regex101.com
+## Exercise: Using Regex101.com
 
 For this exercise, open a browser and go to [https://regex101.com](https://regex101.com). Regex101.com is a free regular expression debugger with real time explanation, error detection, and highlighting.
 
 Open the [swcCoC.md file](https://github.com/LibraryCarpentry/lc-data-intro/tree/main/episodes/data/swcCoC.md), copy the text, and paste that into the test string box.
 
-For a quick test to see if it is working, type the string `community` into the regular expression box.
+For a quick test to see if it is working, type the string `community ` into the regular expression box.
 
 If you look in the box on the right of the screen, you see that the expression matches six instances of the string 'community' (the instances are also highlighted within the text).
 
@@ -31,7 +31,7 @@ If you look in the box on the right of the screen, you see that the expression m
 
 ### Taking spaces into consideration
 
-Type `community `. You get three matches. Why not six?
+Add a space after `community`. You get three matches. Why not six?
 
 :::::::::::::::  solution
 
@@ -135,7 +135,7 @@ Find all of the words starting with Comm or comm that are plural.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Exercise finding email addresses using regex101.com
+## Exercise: finding email addresses
 
 For this exercise, open a browser and go to [https://regex101.com](https://regex101.com).
 
@@ -217,7 +217,7 @@ See the previous exercise for the explanation of the expression up to the `+`
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Exercise finding phone numbers, Using regex101.com
+## Exercise: finding phone numbers
 
 Does this Code of Conduct contain a phone number?
 
@@ -355,9 +355,79 @@ This expression should find one match in the document.
 
 One of the reasons we stress the value of consistent and predictable directory and filenaming conventions is that working in this way enables you to use the computer to select files based on the characteristics of their file names. For example, if you have a bunch of files where the first four digits are the year and you only want to do something with files from '2017', then you can. Or if you have 'journal' somewhere in a filename when you have data about journals, you can use the computer to select just those files. Equally, using plain text formats means that you can go further and select files or elements of files based on characteristics of the data *within* those files. See Workshop Overview: [File Naming \& Formatting](https://librarycarpentry.org/lc-overview/06-file-naming-formatting) for further background.
 
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+## Exercise: Extracting substrings in R using regex
+
+You can use regular expressions in many functions in base R, for example **`grep`** and **`sub`**. We will look at some functions from **`stringr`**, a powerful package for character strings that works well with packages we saw already like **`dplyr`** and **`tidyr`**. To learn more about **`stringr`** after the workshop, you may want to check out this handy [string manipulation with stringr cheatsheet](https://rstudio.github.io/cheatsheets/html/strings.html).
+
+We will look at just two functions in **`stringr`** that can take regular expressions as an argument:
+
+* `str_extract(string, pattern)`: return the first pattern match found in each string, as a vector
+
+* `str_replace(string, pattern, replacement)`: finds the first pattern match in a string, and replaces it with a replacement string
+  
+These functions will return the first pattern match only. To return all possible matches, we can use **`str_extract_all()`** and **`str_replace_all()`**.
+
+:::::::::::::::::::::::::::::::::::::::::  callout
+### ESCAPING METACHARACTERS IN REGULAR EXPRESSIONS IN R
+Regular expressions in R follow the general syntax we have seen so far, with one main exception. In R, strings use a backslash `\` to escape special behavior - but regular expressions are themselves regarded as strings by R. This creates a problem when we use a metacharacter, like **`\d`**, as this is interpreted by R as `d`. We get around this by using an extra `\` beforehand, like **`\\d`**.
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Extracting a substring in Google Sheets using regex
+Let's build a regular expression to extract the month from a date, written as a string in the format YYYY-MM-DD:
+
+```R
+library(stringr)
+str_extract("2024-05-09", "-\\d{2}-")
+```
+```output
+[1] "-05-"
+```
+This returns the month (MM), with the dashes on either side. There are more advanced ways to remove these, bu a simple approach would be to use **`str_replace_all()`** to replace every "-" with "" (that is, nothing):
+```R
+str_replace_all("-05-", "-", "")
+```
+```output
+[1] "05"
+```
+We could go one step further and complete both steps in one line of code by wrapping our first **`str_extract()`** function inside **`str_replace_all()`** 
+```R
+str_replace_all(str_extract("2024-05-09", "-\\d{2}-"), "-", "")
+```
+```output
+[1] "05"
+```
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+### Using regex on a dataframe in R with stringr
+
+Open the "SAFI_clean.csv" dataset we worked with on days 1 and 2 in R. It contains a column "interview_date" with the date of each interview in the format "YYYY-MM-DD". How can we apply the regular expression we just built to add a new column "interview_month" containing just the month (MM)?
+
+Hint: the mutate() function from dplyr can create new columns containing modified values
+
+:::::::::::::::  solution
+### Solution
+```R
+library(tidyverse)
+library(here)
+
+#Read the data
+interviews <- read_csv(
+  here("data", "SAFI_clean.csv"), 
+  na = "NULL")
+  
+# Add a new column "interview_month", containing the month (MM) extracted from the interview_date (YYYY-MM-DD)
+df <- interviews %>%
+  mutate(interview_month = str_replace_all(str_extract(interview_date,"-(\\d{2})-"),"-", ""))
+```
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Exercise: Extracting substrings in Google Sheets using regex
+
+You can also use regular expression in Google Sheets.
+
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -381,9 +451,7 @@ This is one way to solve this challenge. You might have found others. Inside the
 Latitude and longitude are in decimal degree format and can be positive or negative, so we start with an optional dash for negative values then use `\d+` for a one or more digit match followed by a period `\.`. Note we had to escape the period using `\`. After the period we look for one or more digits  `\d+` again followed by a literal comma `,`. We then have a literal space match followed by an optional dash `-` (there are few `0.0` latitude/longitudes that are probably errors, but we'd want to retain so we can deal with them). We then repeat our `\d+\.\d+` we used for the latitude match.
 
 :::::::::::::::::::::::::
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - Regular expressions are useful for searching and cleaning data.
